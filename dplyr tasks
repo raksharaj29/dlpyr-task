@@ -1,0 +1,198 @@
+# packages in R
+# dplyr stands for:
+    # d=dataframe
+    # plyr= old packages of R itha vechi filter(), select(), mutate(), arrange(), summarize() ithelam pannalm
+    # dplyr=dataframe oda data va manipulation pandrathu
+#dplyr vanthu data manuplation ku helpful ah irukkum
+# six verbs iruku:filter(), select(), mutate(), arrange(), summarize(),group_by()
+# dplyr provides several key functions (often called "verbs") for data manipulation
+# These functions are designed to work with data frames
+install.packages("dplyr")
+library(dplyr)
+# filter() – Select Rows Based on Conditions
+library(dplyr)
+
+# Sample data
+df <- data.frame(
+  Name = c("Alice", "Bob", "Charlie", "David"),
+  Age = c(25, 30, 35, 40),m
+  Score = c(90, 85, 88, 75)
+)
+
+# Filter rows where Age is greater than 30
+filtered_df <- df %>% filter(Age > 30)
+print(filtered_df)
+
+# select() – Select Specific Columns
+# Select only Name and Score columns
+selected_df <- df %>% select(Name, Score)
+
+
+print(selected_df)
+
+# mutate() – Create New Columns
+# Add a new column with a percentage score
+df <- df %>% mutate(Percentage = Score / 100)
+print(df)
+
+# arrange() – Sort Rows
+# Arrange by Age (ascending)
+arranged_df <- df %>% arrange(Age)
+print(arranged_df)
+
+# Arrange by Score (descending)
+arranged_df_desc <- df %>% arrange(desc(Score))
+print(arranged_df_desc)
+
+# summarize() – Aggregate Data
+# Compute average Score
+# Used to compute summary statistics like mean, sum, count, etc.
+summary_df <- df %>% summarize(Average_Score = mean(Score))
+print(summary_df)
+
+# group_by() – Group Data for Aggregation
+# Sample data
+df <- data.frame(
+  Name = c("Alice", "Bob", "Charlie", "David", "Eve"),
+  Age = c(25, 30, 35, 30, 25),
+  Score = c(90, 85, 88, 92, 78)
+)
+
+# Group by Age and calculate average Score
+grouped_summary <- df %>%
+  group_by(Age) %>%
+  summarize(Average_Score = mean(Score))
+
+print(grouped_summary)
+
+
+# rename(), distinct(), count(), slice()
+
+# rename() – Rename Columns
+# Rename Score to Exam_Score
+renamed_df <- df %>% rename(Exam_Score = Score)
+print(renamed_df)
+
+# distinct() – Remove Duplicate Rows
+# Remove duplicate Age values
+distinct_df <- df %>% distinct(Age)
+print(distinct_df)
+
+# slice() – Select Specific Rows
+# Used to extract specific rows based on row numbers.
+# Select first 2 rows
+sliced_df <- df %>% slice(1:2)
+print(sliced_df)
+
+
+# count() – Count Number of Occurrences
+# Used to count occurrences of unique values.
+# Count occurrences of each Age
+count_df <- df %>% count(Age)
+print(count_df)
+
+#using pipe operator
+# The pipe operator (%>%) allows chaining multiple dplyr operations.
+# Example: Filter, select, and arrange in one chain
+df %>%
+  filter(Age > 25) %>%
+  select(Name, Score) %>%
+  arrange(desc(Score))
+
+
+
+# Case When (case_when())
+# case_when() is similar to ifelse() but allows multiple conditions.
+df <- df %>%
+  mutate(Result = case_when(
+    Score >= 90 ~ "Excellent",
+    Score >= 80 ~ "Good",
+    TRUE ~ "Average"
+  ))
+
+print(df)
+
+
+# Working with Missing Values (NA)
+# dplyr provides functions to handle missing values.
+
+# Remove missing values: drop_na()
+# Replace missing values: replace_na()
+
+library(tidyr)
+
+df <- data.frame(Name = c("Alice", "Bob", NA, "David"),
+                 Score = c(90, 85, 88, NA))
+
+# Drop rows with NA
+df_clean <- df %>% drop_na()
+print(df_clean)
+
+# Replace NA with a specific value
+df_filled <- df %>% replace_na(list(Name = "Unknown", Score = 0))
+print(df_filled)
+
+# Convert Data Frames to Tibbles
+# Tibbles are a modern version of data frames with better printing.
+
+# df <- as_tibble(df)
+# print(df)
+
+
+# *********************************tasks on dplyr*********************************
+# dataset
+library(tibble)
+
+car_data <- tibble::tribble(
+  ~car_name,         ~mpg, ~hp,  ~wt, ~cyl, ~gear,
+  "Toyota Corolla",   33.9,  65, 1.835,  4,    4,
+  "Ford Mustang",     17.8, 175, 3.440,  8,    4,
+  "Honda Civic",      30.5,  75, 2.150,  4,    5,
+  "Chevrolet Impala", 14.7, 180, 4.100,  8,    3,
+  "Mazda RX4",        21.0, 110, 2.620,  6,    4,
+  "Dodge Challenger", 15.5, 230, 3.800,  8,    3,
+  "Nissan Sentra",    32.2,  69, 1.870,  4,    5,
+  "BMW 320i",         23.0, 102, 2.315,  4,    5,
+  "Mercedes-Benz 280",18.1, 123, 3.440,  6,    4,
+  "Porsche 911",      22.5, 190, 2.200,  6,    5,
+  "Subaru Forester",  26.4, 140, 3.100,  4,    5,
+  "Hyundai Elantra",  28.6, 132, 2.800,  4,    5,
+  "Volkswagen Golf",  29.8,  90, 2.200,  4,    5,
+  "Fiat 500",         36.1,  58, 1.700,  4,    4,
+  "Lexus IS300",      20.3, 215, 3.530,  6,    5,
+  "Tesla Model 3",    141.0, 283, 3.500,  0,    1,
+  "Chevrolet Camaro", 16.0, 275, 3.900,  8,    6,
+  "Mazda MX-5",       34.0, 155, 2.300,  4,    6,
+  "Jeep Wrangler",    17.3, 285, 4.000,  6,    5,
+  "Toyota Prius",     50.0, 121, 2.850,  4,    4
+)
+
+# View the dataset
+print(car_data)
+
+Select Specific Columns: Use select() to choose specific columns from mtcars.
+Filter Rows: Use filter() to get cars with mpg greater than 25 in mtcars.
+Arrange Data: Use arrange() to sort mtcars by hp in descending order.
+Add a New Column: Use mutate() to create a new column in mtcars that converts mpg to km per liter (mpg * 0.425).
+Summarize Data: Use summarize() to find the average mpg of all cars.
+Count Unique Values: Use n_distinct() to count the number of unique cyl values.
+Group by a Column: Use group_by() and summarize() to find the average hp for each cyl.
+Rename Columns: Use rename() to rename mpg to miles_per_gallon.
+Drop a Column: Use select(-column_name) to remove hp from mtcars.
+Find the Max Value: Use summarize() with max() to find the highest hp in mtcars.
+
+
+Filter and Select Together: Select mpg, hp, and wt from mtcars where mpg > 20.
+
+Create Multiple New Columns: Add power_to_weight (hp/wt) and mpg_kmpl (mpg * 0.425).
+
+Find the Car with Highest mpg: Use arrange() and slice(1).
+
+Find the Top 3 Cars with Highest hp: Use arrange() and slice_head(n=3)
+
+Use case_when(): Create a new column efficiency with labels "Low", "Medium", "High" based on mpg values.
+
+Filter with Multiple Conditions: Get rows where mpg > 20 and cyl == 6
+
+Compute Cumulative Sum: Use mutate() with cumsum() on hp
+
